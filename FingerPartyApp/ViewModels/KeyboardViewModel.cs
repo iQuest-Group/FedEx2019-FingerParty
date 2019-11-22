@@ -62,9 +62,11 @@ namespace FingerPartyApp.ViewModels
 		public void InjectKey(Key key)
 		{
 			this.wordProcessor.InjectKey(key);
-			if ("start".Equals(this.wordProcessor.Next()))
+			string word = this.wordProcessor.Next();
+
+			if (this.brushConverterCache.IsValid(word))
 			{
-				this.parent.PushNextFrame(new KeyboardViewModel());
+				BackgroundColor = this.brushConverterCache.ConvertFromString(word) as SolidColorBrush;
 			}
 		}
 
@@ -80,6 +82,8 @@ namespace FingerPartyApp.ViewModels
 		#endregion
 
 		#region Constants and Fields
+
+		private readonly TypeConverter brushConverterCache = TypeDescriptor.GetConverter(typeof(SolidColorBrush));
 
 		private readonly WordProcessor wordProcessor = new WordProcessor();
 
