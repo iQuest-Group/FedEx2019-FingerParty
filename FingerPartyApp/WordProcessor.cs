@@ -21,9 +21,14 @@ namespace FingerPartyApp
 				return;
 			}
 
+			if (0 == this.current.Length)
+			{
+				return;
+			}
+
 			if (IsBackspace(key))
 			{
-				this.current.Remove(this.current.Length - 2, 1);
+				this.current.Remove(this.current.Length - 1, 1);
 			}
 
 			if (IsWordEnd(key))

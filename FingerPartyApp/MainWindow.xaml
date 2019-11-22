@@ -10,7 +10,8 @@
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="views/TutorialMenu.xaml" />
+				<ResourceDictionary Source="views/TutorialMenuView.xaml" />
+				<ResourceDictionary Source="views/KeyboardView.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Window.Resources>

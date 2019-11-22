@@ -1,5 +1,6 @@
 ﻿#region Using Directives
 
+using System.ComponentModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -61,7 +62,7 @@ namespace FingerPartyApp
 
 		private static string GetKeyString(Key key)
 		{
-			string keyString = key.ToString();
+			string keyString = TypeDescriptor.GetConverter(key).ConvertToString(key);
 			if (1 < keyString.Length)
 			{
 				return $" {keyString} ";

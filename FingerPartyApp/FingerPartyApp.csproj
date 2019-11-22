@@ -55,6 +55,8 @@
     </ApplicationDefinition>
     <Compile Include="IKeyProcessor.cs" />
     <Compile Include="IKeyProcessorHost.cs" />
+    <Compile Include="KeyToStringConverter.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\KeyboardViewModel.cs" />
     <Compile Include="ViewModels\TutorialMenuViewModel.cs" />
     <Compile Include="WordProcessor.cs" />
@@ -70,7 +72,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\TutorialMenu.xaml">
+    <Page Include="Views\KeyboardView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\TutorialMenuView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
