@@ -1,0 +1,25 @@
+﻿<Window x:Class="FingerPartyApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FingerPartyApp"
+        mc:Ignorable="d"
+        Title="Finger Party" WindowState="Maximized" WindowStyle="None" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen" Background="Transparent" AllowsTransparency="True">
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="views/TutorialMenu.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
+
+	<Grid>
+		<ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Content="{Binding}" />
+		<TextBlock Background="Black" Foreground="White" Text="To exit type Alt + F4" Margin="10" Height="15" Width="110"
+		           HorizontalAlignment="Left" VerticalAlignment="Top" />
+		<TextBlock Background="Black" Foreground="Lime" Opacity="0.9" Name="TypingHistory" VerticalAlignment="Bottom"
+		           Height="15" Text="Here will be your typing history ... type something!" />
+	</Grid>
+</Window>
