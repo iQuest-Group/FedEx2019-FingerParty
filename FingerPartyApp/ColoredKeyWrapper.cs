@@ -15,7 +15,6 @@ namespace FingerPartyApp
 		public ColoredKeyWrapper(Key key)
 		{
 			Key = key;
-			Color = Brushes.Wheat;
 		}
 
 		#endregion

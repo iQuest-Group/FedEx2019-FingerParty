@@ -35,6 +35,14 @@ namespace FingerPartyApp
 
 		public void InjectKey(Key key)
 		{
+			var isInBackMode = false;
+			if (this.caret > 0 && Key.Back == key)
+			{
+				this.caret--;
+				this.keys[this.caret].Color = DefaultColor;
+				isInBackMode = true;
+			}
+
 			if (CalculateIsAtEnd())
 			{
 				IsAtEnd = true;
@@ -44,6 +52,11 @@ namespace FingerPartyApp
 
 			IsMatchStarted = CalculateIsMatchStarted(key);
 			if (!IsMatchStarted)
+			{
+				return;
+			}
+
+			if (isInBackMode)
 			{
 				return;
 			}
@@ -69,7 +82,7 @@ namespace FingerPartyApp
 
 		private static ColoredKeyWrapper[] GetKeys(string word)
 		{
-			return word.Select(x => new ColoredKeyWrapper(GetKey(x))).ToArray();
+			return word.Select(x => new ColoredKeyWrapper(GetKey(x)) { Color = DefaultColor }).ToArray();
 		}
 
 		private static Key GetKey(char key)
@@ -82,6 +95,8 @@ namespace FingerPartyApp
 		#region Constants and Fields
 
 		private static readonly Brush BadColor = Brushes.OrangeRed;
+
+		private static readonly Brush DefaultColor = Brushes.Wheat;
 
 		private static readonly Brush GoodColor = Brushes.GreenYellow;
 
