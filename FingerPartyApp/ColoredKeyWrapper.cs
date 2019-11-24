@@ -2,18 +2,20 @@
 
 using System.ComponentModel;
 using System.Windows.Input;
+using System.Windows.Media;
 
 #endregion
 
 namespace FingerPartyApp
 {
-	public sealed class KeyChangeWrapper : INotifyPropertyChanged
+	public sealed class ColoredKeyWrapper : INotifyPropertyChanged
 	{
 		#region Constructors
 
-		public KeyChangeWrapper(Key key)
+		public ColoredKeyWrapper(Key key)
 		{
 			Key = key;
+			Color = Brushes.Wheat;
 		}
 
 		#endregion
@@ -22,16 +24,16 @@ namespace FingerPartyApp
 
 		public Key Key { get; }
 
-		public bool IsHighlighted
+		public Brush Color
 		{
 			get
 			{
-				return this.isHighlighted;
+				return this.color;
 			}
-			private set
+			set
 			{
-				this.isHighlighted = value;
-				OnPropertyChanged(nameof(IsHighlighted));
+				this.color = value;
+				OnPropertyChanged(nameof(Color));
 			}
 		}
 
@@ -40,16 +42,6 @@ namespace FingerPartyApp
 		#region Public Events
 
 		public event PropertyChangedEventHandler PropertyChanged;
-
-		#endregion
-
-		#region Public Methods
-
-		public void SendHighlightSignal()
-		{
-			IsHighlighted = true;
-			IsHighlighted = false;
-		}
 
 		#endregion
 
@@ -64,7 +56,7 @@ namespace FingerPartyApp
 
 		#region Constants and Fields
 
-		private bool isHighlighted;
+		private Brush color;
 
 		#endregion
 	}

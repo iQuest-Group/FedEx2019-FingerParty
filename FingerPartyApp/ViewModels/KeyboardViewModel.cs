@@ -17,6 +17,8 @@ namespace FingerPartyApp.ViewModels
 		public KeyboardViewModel()
 		{
 			BackgroundColor = Brushes.Black;
+			this.leftWord = new TrackedWord("hello");
+			this.rightWord = new TrackedWord("world");
 		}
 
 		#endregion
@@ -44,6 +46,10 @@ namespace FingerPartyApp.ViewModels
 
 		public IEnumerable<KeyChangeWrapper> FourthRow => this.fourthRow;
 
+		public IEnumerable<ColoredKeyWrapper> LeftWord => this.leftWord.Keys;
+
+		public IEnumerable<ColoredKeyWrapper> RightWord => this.rightWord.Keys;
+
 		#endregion
 
 		#region Public Events
@@ -63,6 +69,7 @@ namespace FingerPartyApp.ViewModels
 		{
 			HandleKeyHighlight(key);
 			HandleBackgroundColorChange(key);
+			HandleDirection(key);
 		}
 
 		#endregion
@@ -84,6 +91,26 @@ namespace FingerPartyApp.ViewModels
 			if (this.brushConverterCache.IsValid(word))
 			{
 				BackgroundColor = this.brushConverterCache.ConvertFromString(word) as SolidColorBrush;
+			}
+		}
+
+		private void HandleDirection(Key key)
+		{
+			if (!this.leftWord.IsMatchStarted && !this.rightWord.IsMatchStarted)
+			{
+				this.leftWord.InjectKey(key);
+				this.rightWord.InjectKey(key);
+				return;
+			}
+
+			if (this.leftWord.IsMatchStarted)
+			{
+				this.leftWord.InjectKey(key);
+			}
+
+			if (this.rightWord.IsMatchStarted)
+			{
+				this.rightWord.InjectKey(key);
 			}
 		}
 
@@ -119,6 +146,10 @@ namespace FingerPartyApp.ViewModels
 			new KeyChangeWrapper(Key.D), new KeyChangeWrapper(Key.F), new KeyChangeWrapper(Key.G), new KeyChangeWrapper(Key.H),
 			new KeyChangeWrapper(Key.J), new KeyChangeWrapper(Key.K), new KeyChangeWrapper(Key.L)
 		};
+
+		private readonly TrackedWord leftWord;
+
+		private readonly TrackedWord rightWord;
 
 		private readonly KeyChangeWrapper[] secondRow =
 		{

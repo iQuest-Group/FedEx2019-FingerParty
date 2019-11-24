@@ -29,21 +29,54 @@
 		</DataTemplate.Triggers>
 	</DataTemplate>
 
-	<ItemsPanelTemplate x:Key="KeyboardRowPanel">
+	<ItemsPanelTemplate x:Key="HorizontalItemsPanel">
 		<StackPanel Orientation="Horizontal" />
 	</ItemsPanelTemplate>
+
+	<DataTemplate x:Key="TrackTemplate">
+		<Border Width="300" />
+	</DataTemplate>
+
+	<DataTemplate x:Key="TargetWordKeyTemplate" DataType="{x:Type fingerPartyApp:ColoredKeyWrapper}">
+		<TextBlock Foreground="{Binding Color}" FontSize="20"
+		           Text="{Binding Key, Converter={StaticResource KeyConverter}}"
+		           HorizontalAlignment="Left" />
+	</DataTemplate>
+
+	<DataTemplate x:Key="GameStatusTemplate" DataType="{x:Type viewModels:KeyboardViewModel}">
+		<Grid HorizontalAlignment="Center" Margin="0,20">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+
+			<ContentPresenter ContentTemplate="{StaticResource TrackTemplate}" Grid.ColumnSpan="2" />
+			<ItemsControl Grid.Row="1" Grid.Column="0" ItemsSource="{Binding LeftWord}" HorizontalAlignment="Left"
+			              ItemsPanel="{StaticResource HorizontalItemsPanel}"
+			              ItemTemplate="{StaticResource TargetWordKeyTemplate}" />
+			<ItemsControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding RightWord}" HorizontalAlignment="Right"
+			              ItemsPanel="{StaticResource HorizontalItemsPanel}"
+			              ItemTemplate="{StaticResource TargetWordKeyTemplate}" />
+		</Grid>
+	</DataTemplate>
 
 	<DataTemplate DataType="{x:Type viewModels:KeyboardViewModel}">
 		<Grid Background="{Binding BackgroundColor}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 			<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
+				<ContentPresenter ContentTemplate="{StaticResource GameStatusTemplate}" />
 				<ItemsControl ItemsSource="{Binding FirstRow}" ItemTemplate="{StaticResource KeyTemplate}"
-				              ItemsPanel="{StaticResource KeyboardRowPanel}" />
+				              ItemsPanel="{StaticResource HorizontalItemsPanel}" />
 				<ItemsControl ItemsSource="{Binding SecondRow}" ItemTemplate="{StaticResource KeyTemplate}"
-				              ItemsPanel="{StaticResource KeyboardRowPanel}" Margin="20,0,0,0" />
+				              ItemsPanel="{StaticResource HorizontalItemsPanel}" Margin="20,0,0,0" />
 				<ItemsControl ItemsSource="{Binding HomeRow}" ItemTemplate="{StaticResource KeyTemplate}"
-				              ItemsPanel="{StaticResource KeyboardRowPanel}" Margin="40,0,0,0" />
+				              ItemsPanel="{StaticResource HorizontalItemsPanel}" Margin="40,0,0,0" />
 				<ItemsControl ItemsSource="{Binding FourthRow}" ItemTemplate="{StaticResource KeyTemplate}"
-				              ItemsPanel="{StaticResource KeyboardRowPanel}" Margin="60,0,0,0" />
+				              ItemsPanel="{StaticResource HorizontalItemsPanel}" Margin="60,0,0,0" />
 			</StackPanel>
 		</Grid>
 	</DataTemplate>

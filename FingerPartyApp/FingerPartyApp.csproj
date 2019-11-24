@@ -55,9 +55,11 @@
     </ApplicationDefinition>
     <Compile Include="IKeyProcessor.cs" />
     <Compile Include="IKeyProcessorHost.cs" />
+    <Compile Include="ColoredKeyWrapper.cs" />
     <Compile Include="KeyChangeWrapper.cs" />
     <Compile Include="KeyToStringConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="TrackedWord.cs" />
     <Compile Include="ViewModels\KeyboardViewModel.cs" />
     <Compile Include="ViewModels\TutorialMenuViewModel.cs" />
     <Compile Include="WordProcessor.cs" />
