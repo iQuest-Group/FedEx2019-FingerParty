@@ -29,6 +29,8 @@ namespace FingerPartyApp
 
 		public bool IsAtEnd { get; private set; }
 
+		public bool IsCorrect => this.keys.All(x => GoodColor.Equals(x.Color));
+
 		#endregion
 
 		#region Public Methods

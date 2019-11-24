@@ -17,8 +17,8 @@ namespace FingerPartyApp.ViewModels
 		public KeyboardViewModel()
 		{
 			BackgroundColor = Brushes.Black;
-			this.leftWord = new TrackedWord("hello");
-			this.rightWord = new TrackedWord("world");
+			FetchNextLeft();
+			FetchNextRight();
 		}
 
 		#endregion
@@ -76,6 +76,40 @@ namespace FingerPartyApp.ViewModels
 
 		#region Private Methods
 
+		private void FetchNextLeft()
+		{
+			if (!this.words.Any())
+			{
+				GameWon();
+				return;
+			}
+
+			this.leftWord = new TrackedWord(this.words.Dequeue());
+			OnPropertyChanged(nameof(LeftWord));
+		}
+
+		private void FetchNextRight()
+		{
+			if (!this.words.Any())
+			{
+				GameWon();
+				return;
+			}
+
+			this.rightWord = new TrackedWord(this.words.Dequeue());
+			OnPropertyChanged(nameof(RightWord));
+		}
+
+		private void GameWon()
+		{
+			this.leftWord = new TrackedWord("YOU");
+			OnPropertyChanged(nameof(LeftWord));
+			this.rightWord = new TrackedWord("WON");
+			OnPropertyChanged(nameof(RightWord));
+
+			this.isGameFinished = true;
+		}
+
 		private void HandleKeyHighlight(Key key)
 		{
 			KeyChangeWrapper keyHit =
@@ -96,6 +130,11 @@ namespace FingerPartyApp.ViewModels
 
 		private void HandleDirection(Key key)
 		{
+			if (this.isGameFinished)
+			{
+				return;
+			}
+
 			if (!this.leftWord.IsMatchStarted && !this.rightWord.IsMatchStarted)
 			{
 				this.leftWord.InjectKey(key);
@@ -106,12 +145,32 @@ namespace FingerPartyApp.ViewModels
 			if (this.leftWord.IsMatchStarted)
 			{
 				this.leftWord.InjectKey(key);
+
+				if (this.leftWord.IsAtEnd && this.leftWord.IsCorrect)
+				{
+					HandleLeftIsDone();
+				}
 			}
 
 			if (this.rightWord.IsMatchStarted)
 			{
 				this.rightWord.InjectKey(key);
+
+				if (this.rightWord.IsAtEnd && this.rightWord.IsCorrect)
+				{
+					HandleRightIsDone();
+				}
 			}
+		}
+
+		private void HandleLeftIsDone()
+		{
+			FetchNextLeft();
+		}
+
+		private void HandleRightIsDone()
+		{
+			FetchNextRight();
 		}
 
 		private void OnPropertyChanged(string propertyName)
@@ -147,10 +206,6 @@ namespace FingerPartyApp.ViewModels
 			new KeyChangeWrapper(Key.J), new KeyChangeWrapper(Key.K), new KeyChangeWrapper(Key.L)
 		};
 
-		private readonly TrackedWord leftWord;
-
-		private readonly TrackedWord rightWord;
-
 		private readonly KeyChangeWrapper[] secondRow =
 		{
 			new KeyChangeWrapper(Key.Q), new KeyChangeWrapper(Key.W),
@@ -160,9 +215,17 @@ namespace FingerPartyApp.ViewModels
 
 		private readonly WordProcessor wordProcessor = new WordProcessor();
 
+		private readonly Queue<string> words = new Queue<string>(new[] { "Hello", "World", "How", "Are", "You" });
+
 		private SolidColorBrush background;
 
+		private bool isGameFinished;
+
+		private TrackedWord leftWord;
+
 		private IKeyProcessorHost parent;
+
+		private TrackedWord rightWord;
 
 		#endregion
 	}
