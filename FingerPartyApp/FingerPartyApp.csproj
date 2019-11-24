@@ -55,6 +55,7 @@
     </ApplicationDefinition>
     <Compile Include="IKeyProcessor.cs" />
     <Compile Include="IKeyProcessorHost.cs" />
+    <Compile Include="KeyChangeWrapper.cs" />
     <Compile Include="KeyToStringConverter.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\KeyboardViewModel.cs" />

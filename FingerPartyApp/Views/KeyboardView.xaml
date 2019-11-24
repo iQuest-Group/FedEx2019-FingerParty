@@ -5,11 +5,28 @@
                     xmlns:fingerPartyApp="clr-namespace:FingerPartyApp">
 	<fingerPartyApp:KeyToStringConverter x:Key="KeyConverter" />
 
-	<DataTemplate x:Key="KeyTemplate" DataType="{x:Type Key}">
-		<Border Background="#9000" BorderThickness="1" BorderBrush="Lime" CornerRadius="5" Width="33" Padding="10, 5"
-		        Margin="5" SnapsToDevicePixels="True">
-			<TextBlock Foreground="Lime" Text="{Binding Converter={StaticResource KeyConverter}}" HorizontalAlignment="Center" />
+	<DataTemplate x:Key="KeyTemplate" DataType="{x:Type fingerPartyApp:KeyChangeWrapper}">
+		<Border Name="KeyBorder" Background="#9000" BorderThickness="1" BorderBrush="Lime" CornerRadius="5" Width="33"
+		        Padding="10, 5" Margin="5" SnapsToDevicePixels="True">
+			<TextBlock Foreground="Lime" Text="{Binding Key, Converter={StaticResource KeyConverter}}"
+			           HorizontalAlignment="Center" />
 		</Border>
+		<DataTemplate.Triggers>
+			<DataTrigger Binding="{Binding DataContext.IsHighlighted, ElementName=KeyBorder}" Value="True">
+				<Setter TargetName="KeyBorder" Property="CornerRadius" Value="0" />
+				<DataTrigger.EnterActions>
+					<BeginStoryboard>
+						<Storyboard>
+							<ColorAnimation From="#9000" To="Lime"
+							                Storyboard.TargetName="KeyBorder"
+							                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+							                FillBehavior="Stop" AutoReverse="True"
+							                Duration="0:0:0.1" />
+						</Storyboard>
+					</BeginStoryboard>
+				</DataTrigger.EnterActions>
+			</DataTrigger>
+		</DataTemplate.Triggers>
 	</DataTemplate>
 
 	<ItemsPanelTemplate x:Key="KeyboardRowPanel">

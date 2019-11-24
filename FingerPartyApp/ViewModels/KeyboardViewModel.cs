@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -35,14 +36,13 @@ namespace FingerPartyApp.ViewModels
 			}
 		}
 
-		public IEnumerable<Key> FirstRow
-			=> new[] { Key.D1, Key.D2, Key.D3, Key.D4, Key.D5, Key.D6, Key.D7, Key.D8, Key.D9, Key.D0 };
+		public IEnumerable<KeyChangeWrapper> FirstRow => this.firstRow;
 
-		public IEnumerable<Key> SecondRow => new[] { Key.Q, Key.W, Key.E, Key.R, Key.T, Key.Y, Key.U, Key.I, Key.O, Key.P };
+		public IEnumerable<KeyChangeWrapper> SecondRow => this.secondRow;
 
-		public IEnumerable<Key> HomeRow => new[] { Key.A, Key.S, Key.D, Key.F, Key.G, Key.H, Key.J, Key.K, Key.L };
+		public IEnumerable<KeyChangeWrapper> HomeRow => this.homeRow;
 
-		public IEnumerable<Key> FourthRow => new[] { Key.Z, Key.X, Key.C, Key.V, Key.B, Key.N, Key.M };
+		public IEnumerable<KeyChangeWrapper> FourthRow => this.fourthRow;
 
 		#endregion
 
@@ -61,6 +61,23 @@ namespace FingerPartyApp.ViewModels
 
 		public void InjectKey(Key key)
 		{
+			HandleKeyHighlight(key);
+			HandleBackgroundColorChange(key);
+		}
+
+		#endregion
+
+		#region Private Methods
+
+		private void HandleKeyHighlight(Key key)
+		{
+			KeyChangeWrapper keyHit =
+				FirstRow.Concat(SecondRow).Concat(HomeRow).Concat(FourthRow).SingleOrDefault(x => key.Equals(x.Key));
+			keyHit?.SendHighlightSignal();
+		}
+
+		private void HandleBackgroundColorChange(Key key)
+		{
 			this.wordProcessor.InjectKey(key);
 			string word = this.wordProcessor.Next();
 
@@ -69,10 +86,6 @@ namespace FingerPartyApp.ViewModels
 				BackgroundColor = this.brushConverterCache.ConvertFromString(word) as SolidColorBrush;
 			}
 		}
-
-		#endregion
-
-		#region Private Methods
 
 		private void OnPropertyChanged(string propertyName)
 		{
@@ -84,6 +97,35 @@ namespace FingerPartyApp.ViewModels
 		#region Constants and Fields
 
 		private readonly TypeConverter brushConverterCache = TypeDescriptor.GetConverter(typeof(SolidColorBrush));
+
+		private readonly KeyChangeWrapper[] firstRow =
+		{
+			new KeyChangeWrapper(Key.D1), new KeyChangeWrapper(Key.D2),
+			new KeyChangeWrapper(Key.D3), new KeyChangeWrapper(Key.D4), new KeyChangeWrapper(Key.D5),
+			new KeyChangeWrapper(Key.D6), new KeyChangeWrapper(Key.D7), new KeyChangeWrapper(Key.D8),
+			new KeyChangeWrapper(Key.D9), new KeyChangeWrapper(Key.D0)
+		};
+
+		private readonly KeyChangeWrapper[] fourthRow =
+		{
+			new KeyChangeWrapper(Key.Z), new KeyChangeWrapper(Key.X),
+			new KeyChangeWrapper(Key.C), new KeyChangeWrapper(Key.V), new KeyChangeWrapper(Key.B), new KeyChangeWrapper(Key.N),
+			new KeyChangeWrapper(Key.M)
+		};
+
+		private readonly KeyChangeWrapper[] homeRow =
+		{
+			new KeyChangeWrapper(Key.A), new KeyChangeWrapper(Key.S),
+			new KeyChangeWrapper(Key.D), new KeyChangeWrapper(Key.F), new KeyChangeWrapper(Key.G), new KeyChangeWrapper(Key.H),
+			new KeyChangeWrapper(Key.J), new KeyChangeWrapper(Key.K), new KeyChangeWrapper(Key.L)
+		};
+
+		private readonly KeyChangeWrapper[] secondRow =
+		{
+			new KeyChangeWrapper(Key.Q), new KeyChangeWrapper(Key.W),
+			new KeyChangeWrapper(Key.E), new KeyChangeWrapper(Key.R), new KeyChangeWrapper(Key.T), new KeyChangeWrapper(Key.Y),
+			new KeyChangeWrapper(Key.U), new KeyChangeWrapper(Key.I), new KeyChangeWrapper(Key.O), new KeyChangeWrapper(Key.P)
+		};
 
 		private readonly WordProcessor wordProcessor = new WordProcessor();
 
